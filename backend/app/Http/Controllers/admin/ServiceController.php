@@ -39,6 +39,8 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['slug' => Str::slug($request->slug)]);
+        
         $validator = Validator::make($request->all(),[
             'title' => 'required',
             'slug' => 'required|unique:services,slug'
@@ -129,6 +131,8 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->merge(['slug' => Str::slug($request->slug)]);
+        
         $service = Service::find($id);
 
         if($service == null) {
@@ -171,14 +175,14 @@ class ServiceController extends Controller
                 
                 // Making image small here
                 $sourcePath = public_path('uploads/temp/'.$tempImage->name);
-                $destPath = public_path('uploads/services/small'.$fileName);
+                $destPath = public_path('uploads/services/small/'.$fileName);
                 $manager = new ImageManager(Driver::class);
                 $image = $manager->read($sourcePath);
                 $image->coverDown(500, 600);
                 $image->save($destPath);
 
                 // Making image large here
-                $destPath = public_path('uploads/services/large'.$fileName);
+                $destPath = public_path('uploads/services/large/'.$fileName);
                 $manager = new ImageManager(Driver::class);
                 $image = $manager->read($sourcePath);
                 $image->scaleDown(1200);
@@ -188,8 +192,8 @@ class ServiceController extends Controller
                 $service->save();
 
                 if ($oldImage != ''){
-                    File::delete(public_path('uploads/services/large'.$oldImage));
-                    File::delete(public_path('uploads/services/small'.$oldImage));
+                    File::delete(public_path('uploads/services/large/'.$oldImage));
+                    File::delete(public_path('uploads/services/small/'.$oldImage));
                 }
 
             }
@@ -214,6 +218,10 @@ class ServiceController extends Controller
                 'message' => 'Service not found'
             ]);
         }
+
+            
+        File::delete(public_path('uploads/services/large/'.$service->image));
+        File::delete(public_path('uploads/services/small/'.$service->image));
 
         $service->delete();
         

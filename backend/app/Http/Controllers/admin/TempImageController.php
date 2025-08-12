@@ -46,6 +46,7 @@ class TempImageController extends Controller
         $image->coverDown(600, 600);
         $image->save($destPath);
 
+
         return response()->json([
             'status' => true,
             'data' => $model,
