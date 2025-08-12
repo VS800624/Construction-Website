@@ -69,32 +69,37 @@ class ServiceController extends Controller
                 $ext = last($extArray);
 
                 $fileName = strtotime('now'). $service->id. '.' .$ext;
-
                 
                 // Making image small here
                 $sourcePath = public_path('uploads/temp/'.$tempImage->name);
-                $destPath = public_path('uploads/services/small/'.$fileName);
+                $smallPath = public_path('uploads/services/small/'.$fileName);
                 $manager = new ImageManager(Driver::class);
                 $image = $manager->read($sourcePath);
                 $image->coverDown(500, 600);
-                $image->save($destPath);
+                $image->save($smallPath);
 
                 // Making image large here
-                $destPath = public_path('uploads/services/large/'.$fileName);
+                $largePath = public_path('uploads/services/large/'.$fileName);
                 $manager = new ImageManager(Driver::class);
                 $image = $manager->read($sourcePath);
                 $image->scaleDown(1200);
-                $image->save($destPath);
+                $image->save($largePath);
 
                 $service->image = $fileName;
                 $service->save();
+
+                 // ✅ Only delete temp image if both versions exist
+                if (file_exists($smallPath) && file_exists($largePath)) {
+                    @unlink($sourcePath); // delete temp file
+                    $tempImage->delete(); // delete DB record
+                }
 
             }
         }
 
          return response()->json([
                 'status' => true,
-                'message' => "Service added successfully."
+                'message' => "Service added successfully and temp image deleted."
             ]);
     }
 

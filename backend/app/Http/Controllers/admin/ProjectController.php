@@ -58,7 +58,7 @@ class ProjectController extends Controller
         $project->save();
 
 
-        // Store temp  image here
+        // Store temp image here
         if ($request->imageId > 0) {
             $tempImage = TempImage::find($request->imageId);
             if ($tempImage != null) {
@@ -67,31 +67,56 @@ class ProjectController extends Controller
 
                 $fileName = strtotime('now') . $project->id . '.' . $ext;
 
-
-                // Making image small here
                 $sourcePath = public_path('uploads/temp/' . $tempImage->name);
-                $destPath = public_path('uploads/projects/small/' . $fileName);
-                $manager = new ImageManager(Driver::class);
-                $image = $manager->read($sourcePath);
-                $image->coverDown(500, 600);
-                $image->save($destPath);
 
-                // Making image large here
-                $destPath = public_path('uploads/projects/large/' . $fileName);
-                $manager = new ImageManager(Driver::class);
-                $image = $manager->read($sourcePath);
-                $image->scaleDown(1200);
-                $image->save($destPath);
+                // Check if source temp file exists
+                if (!file_exists($sourcePath)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Temp image file not found.'
+                    ]);
+                }
 
-                $project->image = $fileName;
-                $project->save();
+        try {
+            // Image manager instance
+            $manager = new ImageManager(Driver::class);
 
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Project added successfully. '
-                ]);
+            // Making image small
+            $smallPath = public_path('uploads/projects/small/' . $fileName);
+            $image = $manager->read($sourcePath);
+            $image->coverDown(500, 600);
+            $image->save($smallPath);
+
+            // Making image large
+            $largePath = public_path('uploads/projects/large/' . $fileName);
+            $image = $manager->read($sourcePath);
+            $image->scaleDown(1200);
+            $image->save($largePath);
+
+            // Save image name to project
+            $project->image = $fileName;
+            $project->save();
+
+            // ✅ Only delete temp image if both versions exist
+            if (file_exists($smallPath) && file_exists($largePath)) {
+                @unlink($sourcePath); // delete temp file
+                $tempImage->delete(); // delete DB record
             }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Project added successfully and temp image deleted.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Image processing failed: ' . $e->getMessage()
+            ]);
         }
+    }
+}
+
     }
 
     public function update($id, Request $request) {

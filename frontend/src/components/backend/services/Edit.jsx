@@ -88,6 +88,7 @@ const Edit = ({placeholder}) => {
       const formData = new FormData();
       const file = e.target.files[0];
       formData.append("image", file);
+      setIsDisable(true)
   
       try {
           const res = await fetch(apiUrl + 'temp-images', {
@@ -100,7 +101,8 @@ const Edit = ({placeholder}) => {
           })
           const result = await res.json();
           console.log(result);
-  
+          
+          setIsDisable(true)
 
             if (result.status == false) {
                 toast.error(result.errors.image[0])
