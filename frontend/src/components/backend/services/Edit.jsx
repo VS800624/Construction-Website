@@ -62,8 +62,8 @@ const Edit = ({placeholder}) => {
           console.log(data)
          try {
           const res = await fetch(apiUrl + 'services/' +params.id,{
-              'method' : 'PUT',
-              'headers' : {
+              method : 'PUT',
+              headers : {
                   'Content-type' : 'application/json',
                   'Accept' : 'application/json',
                   'Authorization' : `Bearer ${token()}`

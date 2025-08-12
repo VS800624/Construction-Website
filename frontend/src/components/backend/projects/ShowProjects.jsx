@@ -12,8 +12,8 @@ const ShowProjects = () => {
 
     const fetchServices = async () => {
         const res = await fetch(apiUrl+ 'projects',{
-            'method' : 'GET',
-            'headers' : {
+            method : 'GET',
+            headers : {
                 'Content-type' : 'application/json',
                 'Accept' : 'application/json',
                 'Authorization' : `Bearer ${token()}`

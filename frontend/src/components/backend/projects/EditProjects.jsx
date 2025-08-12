@@ -20,7 +20,7 @@ const EditProjects = ({placeholder}) => {
     
         const config = useMemo(() => ({
                 readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-                placeholder: placeholder || 'Content'
+                placeholder: placeholder || ''
             }),
             [placeholder]
         );
@@ -63,8 +63,8 @@ const EditProjects = ({placeholder}) => {
             // console.log(data)
            try {
             const res = await fetch(apiUrl + 'projects/'+params.id,{
-                'method' : 'PUT',
-                'headers' : {
+                method : 'PUT',
+                headers : {
                     'Content-type' : 'application/json',
                     'Accept' : 'application/json',
                     'Authorization' : `Bearer ${token()}`
@@ -258,7 +258,7 @@ const EditProjects = ({placeholder}) => {
                                         }
                                     </div>
 
-                                    <button disabled={isDisable}  className="btn btn-primary">Submit</button>
+                                    <button disabled={isDisable}  className="btn btn-primary">Update</button>
                                 </form>
                             </div>
                         </div> 

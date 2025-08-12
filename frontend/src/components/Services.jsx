@@ -8,8 +8,8 @@ import { apiUrl, fileUrl } from "./common/http";
 const Services = () => {
 
      const[services, setServices] = useState([])
-    const fetchLatestServices = async () => {
-        const res = await fetch(apiUrl+'get-latest-services?limit=4',{
+    const fetchServices = async () => {
+        const res = await fetch(apiUrl+'get-services',{
            'method' : 'GET',
         })
         const result = await res.json();
@@ -18,7 +18,7 @@ const Services = () => {
     }
     
     useEffect(() => {
-        fetchLatestServices()
+        fetchServices()
     }, []);
     
     
