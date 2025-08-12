@@ -23,8 +23,23 @@ const ShowProjects = () => {
         setProjects(result.data);
     }
 
-    const deleteProject = (id) => {
-
+    const deleteProject = async (id) => {
+        if (confirm("Are you sure you want to delete?")){
+            const res = await fetch(apiUrl+ 'projects/'+id, {
+                "method" : "DELETE",
+                "headers" : {
+                    'Content-type' : 'application/json',
+                    'Accept' : 'application/json',
+                    'Authorization' : `Bearer ${token()}` 
+                }
+            });
+            const result = await res.json()
+            if (result.status == true) {
+                toast.success(result.message)
+                const newProjects = projects.filter(project => project.id != id)
+                setProjects(newProjects)
+            }
+        }
     }
     
     useEffect(() => {
@@ -73,7 +88,7 @@ const ShowProjects = () => {
                                                             project.status == 1 ? 'Active' : 'Blog'
                                                             }</td>
                                                             <td>
-                                                                <Link to={`/admin/services/edit/${project.id}`} className="btn btn-primary btn-sm">Edit</Link>
+                                                                <Link to={`/admin/projects/edit/${project.id}`} className="btn btn-primary btn-sm">Edit</Link>
                                                                 <Link onClick={() => deleteProject(project.id)} to="" className="btn btn-secondary btn-sm ms-2">Delete</Link>
                                                             </td>
                                                         </tr>
