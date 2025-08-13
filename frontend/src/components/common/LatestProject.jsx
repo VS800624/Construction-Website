@@ -31,7 +31,7 @@ const LatestProject = () => {
                         {
                             projects && projects.length > 0 ? (
                                 projects.map((project) => (
-                                    <div className="col-md-3 col-lg-3" key={project.id}>
+                                    <div className="col-md-3 col-lg-3" key={`project-${project.id}`}>
                                         <div className="item">
                                             <div className="service-image">
                                                 <img

@@ -10,9 +10,9 @@ const WhyChooseUs = () => {
                             <p>Created in close partnership with our clients and collaborators, this approach merges industry expertise, <br /> decades of experience, innovation, and flexibility to consistently deliver excellence.</p>
                          </div>
                          <div className="row pt-4">
-                             {whyChoose.map((data) => {
+                             {whyChoose.map((data, index) => {
                             return (
-                            <div className="col-md-4">
+                            <div key={index} className="col-md-4">
                                 <div className="card shadow borer-0 p-4 mb-[20px]">
                                     <div className="card-icon pb-2 ">
                                         <img src={data.icon} alt="" />

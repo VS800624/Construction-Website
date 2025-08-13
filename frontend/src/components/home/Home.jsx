@@ -4,12 +4,12 @@ import Header from './Header';
 import Footer from './Footer';
 import WhyChooseUs from './WhyChooseUs';
 import Testimonials from './Testimonials';
-import Blogs from './Blogs';
 import AboutSection from './AboutSection';
 import { apiUrl } from '../common/http';
 import { useEffect, useState } from 'react';
 import LatestServices from '../common/LatestServices';
 import LatestProject from '../common/LatestProject';
+import LatestArticles from '../common/LatestArticles';
 
 const Home = () => {
 
@@ -34,7 +34,10 @@ const Home = () => {
         </main> 
         
         <Testimonials/>
-        <Blogs/>
+
+        {/* Articles and Blogs */}
+        <LatestArticles/>
+
         <Footer/>
         
         </>

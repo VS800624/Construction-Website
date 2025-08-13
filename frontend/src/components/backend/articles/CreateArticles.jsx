@@ -146,9 +146,6 @@ const CreateArticles = ({placeholder}) => {
                                         type="text" placeholder="Author" className={`form-control `}/>
                                     </div>
 
-                                      
-                                   
-
                                     <div className="mb-3">
                                         <label htmlFor=""  className="form-label">Content</label>
                                         <JoditEditor

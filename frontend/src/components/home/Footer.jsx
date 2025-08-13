@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -14,16 +15,16 @@ const Footer = () => {
                         <h3  className="mb-3">Our Services</h3>
                         <ul>
                             <li>
-                                <a href="">Specialty Construction</a>
+                                <a to="">Specialty Construction</a>
                             </li>
                             <li>
-                                <a href="">Specialty Construction</a>
+                                <a to="">Specialty Construction</a>
                             </li>
                             <li>
-                                <a href="">Specialty Construction</a>
+                                <a to="">Specialty Construction</a>
                             </li>
                             <li>
-                                <a href="">Specialty Construction</a>
+                                <a to="">Specialty Construction</a>
                             </li>
                         </ul>
                     </div>
@@ -32,19 +33,19 @@ const Footer = () => {
                         <h3 className="mb-3">Quick Links</h3>
                         <ul>
                             <li>
-                                <a href="">About Us</a>
+                                <Link to="/about">About Us</Link>
                             </li>
                             <li>
-                                <a href="">Services</a>
+                                <a to="/services">Services</a>
                             </li>
                             <li>
-                                <a href="">Projects</a>
+                                <a to="/projects">Projects</a>
                             </li>
                             <li>
-                                <a href="">Blogs</a>
+                                <a to="/blogs">Blogs</a>
                             </li>
                             <li>
-                                <a href="">Contact Us</a>
+                                <a to="/contact-us">Contact Us</a>
                             </li>
                         </ul>
                     </div>
@@ -52,10 +53,10 @@ const Footer = () => {
                         <h3 className="mb-3">Contact Us</h3>
                         <ul>
                             <li>
-                                <a href="">(888-000-0000)</a>
+                                <a to="">(888-000-0000)</a>
                             </li>
                             <li>
-                                <a href="">info@example.com</a>
+                                <a to="">info@example.com</a>
                             </li>
                             <li>
                                 <p>
