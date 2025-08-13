@@ -24,7 +24,7 @@ const ShowProjects = () => {
     }
 
     const deleteProject = async (id) => {
-        if (confirm("Are you sure you want to delete?")){
+        if (confirm("Are you sure you want to delete this project?")){
             const res = await fetch(apiUrl+ 'projects/'+id, {
                 "method" : "DELETE",
                 "headers" : {
@@ -70,7 +70,7 @@ const ShowProjects = () => {
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Name</th>
+                                                <th>Title</th>
                                                 <th>Slug</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
