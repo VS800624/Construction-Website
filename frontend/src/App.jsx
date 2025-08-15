@@ -21,6 +21,12 @@ import EditProjects from './components/backend/projects/EditProjects';
 import ShowArticles from './components/backend/articles/ShowArticles';
 import CreateArticles from './components/backend/articles/CreateArticles';
 import EditArticles from './components/backend/articles/EditArticles';
+import ShowTestimonials from './components/backend/testimonials/ShowTestimonials';
+import CreateTestimonials from './components/backend/testimonials/CreateTestimonials';
+import EditTestimonials from './components/backend/testimonials/EditTestimonials';
+import ShowMembers from './components/backend/members/ShowMembers';
+import CreateMembers from './components/backend/members/CreateMembers';
+import EditMembers from './components/backend/members/EditMembers';
 
 
 function App() {
@@ -95,6 +101,42 @@ function App() {
             <Route path='/admin/articles/edit/:id' element={
             <RequireAuth>
               <EditArticles/>
+            </RequireAuth>
+            }/>
+
+            <Route path='/admin/testimonials/create' element={
+            <RequireAuth>
+              <CreateTestimonials/>
+            </RequireAuth>
+            }/>
+
+            <Route path='/admin/testimonials/edit/:id' element={
+            <RequireAuth>
+              <EditTestimonials/>
+            </RequireAuth>
+            }/>
+
+            <Route path='/admin/testimonials' element={
+            <RequireAuth>
+              <ShowTestimonials/>
+            </RequireAuth>
+            }/>
+
+            <Route path='/admin/members' element={
+            <RequireAuth>
+              <ShowMembers/>
+            </RequireAuth>
+            }/>
+            
+            <Route path='/admin/members/create' element={
+            <RequireAuth>
+              <CreateMembers/>
+            </RequireAuth>
+            }/>
+
+            <Route path='/admin/members/edit/:id' element={
+            <RequireAuth>
+              <EditMembers/>
             </RequireAuth>
             }/>
 

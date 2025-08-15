@@ -3,41 +3,29 @@ import Sidebar from "../../common/Sidebar";
 import Footer from "../../home/Footer";
 import Header from "../../home/Header";
 import { useForm } from "react-hook-form";
-import { useMemo, useRef, useState } from "react";
+import {  useState } from "react";
 import { apiUrl, token } from "../../common/http";
 import { toast } from "react-toastify";
-import JoditEditor from 'jodit-react';
 
+const CreateMembers = () => {
 
-const CreateArticles = ({placeholder}) => {
-
-    const editor = useRef(null);
-    const [content, setContent] = useState('');
     const [isDisable, setIsDisable] = useState(false);
     const [imageId, setImageId] = useState(null);
 
-    
-        const config = useMemo(() => ({
-                readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-                placeholder: placeholder || 'Content'
-            }),
-            [placeholder]
-        );
-        
         const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
       } = useForm();
-    
+
       const navigate = useNavigate()
 
       const onSubmit = async (data) => {
-            const newData = { ...data, "content": content, "imageId": imageId}
+            const newData = { ...data, "imageId": imageId}
             // console.log(data)
            try {
-            const res = await fetch(apiUrl + 'articles',{
+            const res = await fetch(apiUrl + 'members',{
                 method : 'POST',
                 headers : {
                     'Content-type' : 'application/json',
@@ -51,16 +39,16 @@ const CreateArticles = ({placeholder}) => {
     
             if (result.status == true){
                 toast.success(result.message)
-                navigate('/admin/articles')
+                navigate('/admin/members')
             }else {
                 toast.error(result.message)
               }  
            } catch(error) {
-             console.error("Error fetching articles:", error);
+             console.error("Error fetching members:", error);
            }
         }
 
-        const handleFile = async (e) => {
+         const handleFile = async (e) => {
                 const formData = new FormData();
                 const file = e.target.files[0];
                 formData.append("image", file);
@@ -91,7 +79,6 @@ const CreateArticles = ({placeholder}) => {
     
     return <>
         <Header/>
-
         <main >
             <div className="container my-5">
                 <div className="row">
@@ -104,58 +91,46 @@ const CreateArticles = ({placeholder}) => {
                         <div className="card shadow border-0">
                             <div className="card-body p-4">
                                 <div className="d-flex justify-content-between">
-                                    <h4 className="h5">Articles / Create</h4>
-                                    <Link to="/admin/articles" className="btn btn-primary">Back</Link>
+                                    <h4 className="h5">Members / Create</h4>
+                                    <Link to="/admin/members" className="btn btn-primary">Back</Link>
                                 </div>
                                 <hr />
                                 <form  onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label htmlFor="" className="form-label">Title</label>
+                                        <label htmlFor="" className="form-label">Name</label>
                                         <input
                                         {
-                                            ...register('title',{
-                                                required : 'The title field is required'
+                                            ...register('name',{
+                                                required : 'The name field is required'
                                             })
                                         }
-                                        type="text" placeholder="Title" className={`form-control ${errors.title && 'is-invalid'}`}/>
+                                        type="text" placeholder="Name" className={`form-control ${errors.name && 'is-invalid'}`}/>
                                         {
-                                            errors.title && <p className="invalid-feedback">{errors.title?.message}</p>
+                                            errors.name && <p className="invalid-feedback">{errors.name?.message}</p>
                                         }
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Slug</label>
+                                        <label htmlFor=""  className="form-label">Job Title</label>
                                         <input
                                         {
-                                            ...register('slug',{
-                                                required : 'The slug field is required'
+                                            ...register('job_title',{
+                                                required : 'The Job title field is required'
                                             })
                                         }
-                                        type="text" placeholder="Slug" className={`form-control ${errors.slug && 'is-invalid'}`}/>
+                                        type="text" placeholder="Job Title" className={`form-control ${errors.job_title && 'is-invalid'}`}/>
                                         {
-                                            errors.slug && <p className="invalid-feedback">{errors.slug?.message}</p>
+                                            errors.job_title && <p className="invalid-feedback">{errors.job_title?.message}</p>
                                         }
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Author</label>
+                                        <label htmlFor=""  className="form-label">Linkedin Url</label>
                                         <input
                                         {
-                                            ...register('author')
+                                            ...register('linkedin_url')
                                         }
-                                        type="text" placeholder="Author" className={`form-control `}/>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Content</label>
-                                        <JoditEditor
-                                            ref={editor}
-                                            value={content}
-                                            config={config}
-                                            tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                            onChange={newContent => {}}
-                                        />
+                                        type="text" placeholder="Linkedin Url" className={`form-control `}/>
                                     </div>
 
                                     <div className="mb-3">
@@ -189,4 +164,4 @@ const CreateArticles = ({placeholder}) => {
         </>
 }
 
-export default CreateArticles;
+export default CreateMembers;

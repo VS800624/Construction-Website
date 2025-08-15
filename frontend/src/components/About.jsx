@@ -3,6 +3,8 @@ import Footer from "./home/Footer";
 import Header from "./home/Header";
 import MemberImg from '../assets/images/team1.jpg'
 import Hero from "./common/Hero";
+import { Testimonial } from "../data";
+import Testimonials from "./home/Testimonials";
 
 const About = () => {
     return (
@@ -108,6 +110,8 @@ const About = () => {
                     </div>
                 </div>
             </section>
+
+            <Testimonials/>
         </main>
         <Footer/>
         </>

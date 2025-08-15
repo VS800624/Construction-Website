@@ -1,66 +1,74 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../common/Sidebar";
 import Footer from "../../home/Footer";
 import Header from "../../home/Header";
 import { useForm } from "react-hook-form";
-import { useMemo, useRef, useState } from "react";
-import { apiUrl, token } from "../../common/http";
+import {  useState } from "react";
+import { apiUrl, fileUrl, token } from "../../common/http";
 import { toast } from "react-toastify";
-import JoditEditor from 'jodit-react';
 
+const EditTestimonials = () => {
 
-const CreateArticles = ({placeholder}) => {
-
-    const editor = useRef(null);
-    const [content, setContent] = useState('');
     const [isDisable, setIsDisable] = useState(false);
     const [imageId, setImageId] = useState(null);
+    const [testimonials, setTestimonials] =  useState([])
+     const params = useParams();
 
-    
-        const config = useMemo(() => ({
-                readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-                placeholder: placeholder || 'Content'
-            }),
-            [placeholder]
-        );
-        
         const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
-      } = useForm();
-    
+      } = useForm({
+        defaultValues : async () => {
+            const res = await fetch(apiUrl+ "testimonials/" + params.id, {
+                method: 'GET',
+                headers: {
+                    "Content-type" : "application/json",
+                    "Accept" : "application/json",
+                    "Authorization" : `Bearer ${token()}`
+                },
+            })
+            const result = await res.json()
+            setTestimonials(result.data)
+            return {
+                'testimonial' : result.data.testimonial,
+                'citation' : result.data.citation,
+                'designation' : result.data.designation,
+                'status' : result.data.status,
+            }
+        }
+      });
+
       const navigate = useNavigate()
 
       const onSubmit = async (data) => {
-            const newData = { ...data, "content": content, "imageId": imageId}
-            // console.log(data)
-           try {
-            const res = await fetch(apiUrl + 'articles',{
-                method : 'POST',
+        const newData = { ... data, "imageId" : imageId}
+        try{
+            const res = await fetch(apiUrl+ "testimonials/"+params.id,{
+                method: "PUT",
                 headers : {
-                    'Content-type' : 'application/json',
-                    'Accept' : 'application/json',
-                    'Authorization' : `Bearer ${token()}`
+                    "Content-type" : "application/json",
+                    "Accept" : "application/json",
+                    "Authorization" : `Bearer ${token()}`
                 },
                 body: JSON.stringify(newData)
-            });
+            })
             const result = await res.json();
-            console.log(result)
-    
+            console.log(result);
+            
             if (result.status == true){
                 toast.success(result.message)
-                navigate('/admin/articles')
+                navigate('/admin/testimonials')
             }else {
                 toast.error(result.message)
               }  
-           } catch(error) {
-             console.error("Error fetching articles:", error);
-           }
+        } catch (error) {
+             console.error("Error uploading file:", error);
         }
-
-        const handleFile = async (e) => {
+      }
+    
+       const handleFile = async (e) => {
                 const formData = new FormData();
                 const file = e.target.files[0];
                 formData.append("image", file);
@@ -88,10 +96,9 @@ const CreateArticles = ({placeholder}) => {
                     console.error("Error uploading file:", error);
                 }
         };
-    
+      
     return <>
         <Header/>
-
         <main >
             <div className="container my-5">
                 <div className="row">
@@ -104,64 +111,57 @@ const CreateArticles = ({placeholder}) => {
                         <div className="card shadow border-0">
                             <div className="card-body p-4">
                                 <div className="d-flex justify-content-between">
-                                    <h4 className="h5">Articles / Create</h4>
-                                    <Link to="/admin/articles" className="btn btn-primary">Back</Link>
+                                    <h4 className="h5">Testimonials / Edit</h4>
+                                    <Link to="/admin/testimonials" className="btn btn-primary">Back</Link>
                                 </div>
                                 <hr />
                                 <form  onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label htmlFor="" className="form-label">Title</label>
-                                        <input
+                                        <label htmlFor="" className="form-label">Testimonials</label>
+                                        <textarea
                                         {
-                                            ...register('title',{
-                                                required : 'The title field is required'
+                                            ...register('testimonial',{
+                                                required : 'The testimonial field is required'
                                             })
                                         }
-                                        type="text" placeholder="Title" className={`form-control ${errors.title && 'is-invalid'}`}/>
+                                        type="text" placeholder="Testimonial" className={`form-control ${errors.testimonial && 'is-invalid'}`} rows={4}></textarea>
                                         {
-                                            errors.title && <p className="invalid-feedback">{errors.title?.message}</p>
+                                            errors.testimonial && <p className="invalid-feedback">{errors.testimonial?.message}</p>
                                         }
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Slug</label>
+                                        <label htmlFor=""  className="form-label">Citation</label>
                                         <input
                                         {
-                                            ...register('slug',{
-                                                required : 'The slug field is required'
+                                            ...register('citation',{
+                                                required : 'The citation field is required'
                                             })
                                         }
-                                        type="text" placeholder="Slug" className={`form-control ${errors.slug && 'is-invalid'}`}/>
+                                        type="text" placeholder="Citation" className={`form-control ${errors.citation && 'is-invalid'}`}/>
                                         {
-                                            errors.slug && <p className="invalid-feedback">{errors.slug?.message}</p>
+                                            errors.citation && <p className="invalid-feedback">{errors.citation?.message}</p>
                                         }
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Author</label>
+                                        <label htmlFor=""  className="form-label">Designation</label>
                                         <input
                                         {
-                                            ...register('author')
+                                            ...register('designation')
                                         }
-                                        type="text" placeholder="Author" className={`form-control `}/>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor=""  className="form-label">Content</label>
-                                        <JoditEditor
-                                            ref={editor}
-                                            value={content}
-                                            config={config}
-                                            tabIndex={1} // tabIndex of textarea
-                                            onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                            onChange={newContent => {}}
-                                        />
+                                        type="text" placeholder="Designation" className={`form-control `}/>
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="">Image</label>
                                         <br />
                                         <input onChange={handleFile} type="file" />
+                                    </div>
+                                     <div className="pb-3">
+                                        {
+                                            testimonials.image && <img src={fileUrl+ 'uploads/testimonials/' +testimonials.image} alt="" width={100}/>
+                                        }
                                     </div>
 
                                      <div className="mb-3">
@@ -176,7 +176,7 @@ const CreateArticles = ({placeholder}) => {
                                         </select>
                                     </div>  
                                     
-                                    <button disabled={isDisable}  className="btn btn-primary">Submit</button>
+                                    <button disabled={isDisable}  className="btn btn-primary">Update</button>
                                 </form>
                             </div>
                         </div> 
@@ -189,4 +189,4 @@ const CreateArticles = ({placeholder}) => {
         </>
 }
 
-export default CreateArticles;
+export default EditTestimonials;

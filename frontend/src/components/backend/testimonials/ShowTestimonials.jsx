@@ -4,49 +4,53 @@ import Header from "../../home/Header";
 import Footer from "../../home/Footer";
 import { useEffect, useState } from "react";
 import { apiUrl, token } from "../../common/http";
+import { toast } from "react-toastify";
 
 
-const ShowProjects = () => {
-    
-    const [projects, setProjects] = useState([]);
+const ShowTestimonials = () => {
 
-    const fetchServices = async () => {
-        const res = await fetch(apiUrl+ 'projects',{
+    const [testimonials, setTestimonials] = useState([])
+
+    const fetchTestimonials = async () => { 
+        const res = await fetch(apiUrl+ 'testimonials',{
             method : 'GET',
-            headers : {
-                'Content-type' : 'application/json',
-                'Accept' : 'application/json',
+            headers: {
+                'Content-type' : 'application-json',
+                'Accept' : 'application-json',
                 'Authorization' : `Bearer ${token()}`
             }
-        })
-        const result = await res.json();
-        setProjects(result.data);
+        });
+        const result = await res.json()
+        // console.log(result)
+        setTestimonials(result.data);
     }
 
-    const deleteProject = async (id) => {
-        if (confirm("Are you sure you want to delete this project?")){
-            const res = await fetch(apiUrl+ 'projects/'+id, {
-                "method" : "DELETE",
-                "headers" : {
-                    'Content-type' : 'application/json',
-                    'Accept' : 'application/json',
-                    'Authorization' : `Bearer ${token()}` 
-                }
+    const deleteTestimonial = async (id) => {
+        if (confirm("Are you sure you want to delete this testimonial")){
+            const res = await fetch(apiUrl+"testimonials/" + id, {
+                method: "DELETE",
+                headers : {
+                        'Content-type' : 'application/json',
+                        'Accept' : 'application/json',
+                        'Authorization' : `Bearer ${token()}`
+                    },
             });
-            const result = await res.json()
+            const result = await res.json();
             if (result.status == true) {
-                toast.success(result.message)
-                const newProjects = projects.filter(project => project.id != id)
-                setProjects(newProjects)
-            }
+                    const newTestimonials = testimonials.filter(testimonial => testimonial.id != id)
+                    setTestimonials(newTestimonials)
+                    toast.success(result.message)
+                } else {
+                    toast.error(result.message)
+                }
         }
     }
     
     useEffect(() => {
-        fetchServices();
+        fetchTestimonials()
     }, [])
     
-    return  <>
+     return  <>
             <Header/>
 
             <main >
@@ -61,8 +65,8 @@ const ShowProjects = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className="h5">Projects</h4>
-                                        <Link to="/admin/projects/create" className="btn btn-primary">Create</Link>
+                                        <h4 className="h5">Testimonials</h4>
+                                        <Link to="/admin/testimonials/create" className="btn btn-primary">Create</Link>
                                     </div>
                                     <hr />
 
@@ -70,26 +74,26 @@ const ShowProjects = () => {
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Title</th>
-                                                <th>Slug</th>
+                                                <th>Testimonial</th>
+                                                <th>Citation</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                projects && projects.map((project, index) => {
+                                                testimonials && testimonials.map((testimonial, index) => {
                                                    return (
-                                                        <tr key={`service-${projects.id}`}>
+                                                        <tr key={`service-${testimonials.id}`}>
                                                             <td>{index+1}</td>
-                                                            <td>{project.title}</td>
-                                                            <td>{project.slug}</td>
+                                                            <td>{testimonial.testimonial}</td>
+                                                            <td>{testimonial.citation}</td>
                                                             <td>{
-                                                            project.status == 1 ? 'Active' : 'Blog'
+                                                            testimonial.status == 1 ? 'Active' : 'Blog'
                                                             }</td>
                                                             <td>
-                                                                <Link to={`/admin/projects/edit/${project.id}`} className="btn btn-primary btn-sm">Edit</Link>
-                                                                <Link onClick={() => deleteProject(project.id)} to="" className="btn btn-secondary btn-sm ms-2">Delete</Link>
+                                                                <Link to={`/admin/testimonials/edit/${testimonial.id}`} className="btn btn-primary btn-sm">Edit</Link>
+                                                                <Link onClick={() => deleteTestimonial(testimonial.id)} to="" className="btn btn-secondary btn-sm ms-2">Delete</Link>
                                                             </td>
                                                         </tr>
                                                    )
@@ -108,4 +112,4 @@ const ShowProjects = () => {
         </>
 }
 
-export default ShowProjects;
+export default ShowTestimonials;

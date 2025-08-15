@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\ProjectController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\TempImageController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\front\FrontArticleController;
 use App\Http\Controllers\front\FrontProjectController;
 use App\Http\Controllers\front\FrontServiceController;
+use App\Http\Controllers\front\FrontTestimonialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,9 @@ Route::get('/get-latest-projects',[FrontProjectController::class,'latestProjects
 
 Route::get('/get-articles',[FrontArticleController::class,'index']);
 Route::get('/get-latest-articles',[FrontArticleController::class,'latestArticles']);
+
+Route::get('/get-testimonials',[FrontTestimonialController::class,'index']);
+
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
     // Protected Routes
@@ -62,6 +67,13 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/testimonials/{id}',[TestimonialController::class,'show']);
     Route::put('/testimonials/{id}',[TestimonialController::class,'update']);
     Route::delete('/testimonials/{id}',[TestimonialController::class,'destroy']);
+
+    // Members Routes 
+    Route::get('/members',[MemberController::class,'index']);
+    Route::post('/members',[MemberController::class,'store']);
+    Route::get('/members/{id}',[MemberController::class,'show']);
+    Route::put('/members/{id}',[MemberController::class,'update']);
+    Route::delete('/members/{id}',[MemberController::class,'destroy']);
 
     // Temp Image Routes 
      Route::post('/temp-images',[TempImageController::class,'store']);

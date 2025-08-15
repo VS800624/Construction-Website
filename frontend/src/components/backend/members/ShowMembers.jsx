@@ -4,51 +4,53 @@ import Header from "../../home/Header";
 import Footer from "../../home/Footer";
 import { useEffect, useState } from "react";
 import { apiUrl, token } from "../../common/http";
+import { toast } from "react-toastify";
 
+const ShowMembers = () => {
 
-const ShowProjects = () => {
-    
-    const [projects, setProjects] = useState([]);
+    const [members, setMembers] = useState([])
 
-    const fetchServices = async () => {
-        const res = await fetch(apiUrl+ 'projects',{
-            method : 'GET',
+    const fetchMembers = async () => {
+        const res = await fetch(apiUrl+ "members",{
+            method:  "GET",
             headers : {
-                'Content-type' : 'application/json',
-                'Accept' : 'application/json',
-                'Authorization' : `Bearer ${token()}`
+                "Content-type" : "application/json",
+                "Accept" : "application/json",
+                "Authorization" : `Bearer ${token()}`
             }
-        })
-        const result = await res.json();
-        setProjects(result.data);
+        });
+        const result = await res.json()
+        // console.log(result)
+        setMembers(result.data)
     }
 
-    const deleteProject = async (id) => {
-        if (confirm("Are you sure you want to delete this project?")){
-            const res = await fetch(apiUrl+ 'projects/'+id, {
-                "method" : "DELETE",
-                "headers" : {
-                    'Content-type' : 'application/json',
-                    'Accept' : 'application/json',
-                    'Authorization' : `Bearer ${token()}` 
+    const deleteMember = async (id) => {
+        if (confirm("Are you sure you want to delete this member?")){
+            const res = await fetch(apiUrl+ "members/" +id,{
+                method: "DELETE",
+                headers : {
+                    "Content-type" : "application/json",
+                    "Accept" : "application/json" ,
+                    "Authorization" : `Bearer ${token()}`
                 }
             });
             const result = await res.json()
             if (result.status == true) {
-                toast.success(result.message)
-                const newProjects = projects.filter(project => project.id != id)
-                setProjects(newProjects)
-            }
+                    const newMembers = members.filter(member => member.id != id)
+                    setMembers(newMembers)
+                    toast.success(result.message)
+                } else {
+                    toast.error(result.message)
+                }
         }
     }
-    
+
     useEffect(() => {
-        fetchServices();
+        fetchMembers()
     }, [])
     
-    return  <>
+       return  <>
             <Header/>
-
             <main >
                 <div className="container my-5">
                     <div className="row">
@@ -61,8 +63,8 @@ const ShowProjects = () => {
                             <div className="card shadow border-0">
                                 <div className="card-body p-4">
                                     <div className="d-flex justify-content-between">
-                                        <h4 className="h5">Projects</h4>
-                                        <Link to="/admin/projects/create" className="btn btn-primary">Create</Link>
+                                        <h4 className="h5">members</h4>
+                                        <Link to="/admin/members/create" className="btn btn-primary">Create</Link>
                                     </div>
                                     <hr />
 
@@ -70,26 +72,26 @@ const ShowProjects = () => {
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Title</th>
-                                                <th>Slug</th>
+                                                <th>Name</th>
+                                                <th>Job Title</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                projects && projects.map((project, index) => {
+                                                members && members.map((member,index) => {
                                                    return (
-                                                        <tr key={`service-${projects.id}`}>
+                                                        <tr key={`service-${members.id}`}>
                                                             <td>{index+1}</td>
-                                                            <td>{project.title}</td>
-                                                            <td>{project.slug}</td>
+                                                            <td>{member.name}</td>
+                                                            <td>{member.job_title}</td>
                                                             <td>{
-                                                            project.status == 1 ? 'Active' : 'Blog'
+                                                            member.status == 1 ? 'Active' : 'Blog'
                                                             }</td>
                                                             <td>
-                                                                <Link to={`/admin/projects/edit/${project.id}`} className="btn btn-primary btn-sm">Edit</Link>
-                                                                <Link onClick={() => deleteProject(project.id)} to="" className="btn btn-secondary btn-sm ms-2">Delete</Link>
+                                                                <Link to={`/admin/members/edit/${member.id}`} className="btn btn-primary btn-sm">Edit</Link>
+                                                                <Link onClick={() => deleteMember(member.id)} to="" className="btn btn-secondary btn-sm ms-2">Delete</Link>
                                                             </td>
                                                         </tr>
                                                    )
@@ -108,4 +110,4 @@ const ShowProjects = () => {
         </>
 }
 
-export default ShowProjects;
+export default ShowMembers;
