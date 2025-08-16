@@ -30,4 +30,21 @@ class FrontServiceController extends Controller
             'data' => $services
         ]);
     }
+
+    // This method will return single service
+    public function service($id) {
+        $service = Service::find($id);
+
+        if ($service == null) {
+            return response()->json([
+                'status' => false,
+                'message' => "No service found"
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $service
+        ]);
+    }
 }

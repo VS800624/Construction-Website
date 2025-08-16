@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ConstructionImg from '../../assets/images/construction2.jpg'
 import { apiUrl, fileUrl } from './http'
+import { Link } from 'react-router-dom'
 
 const LatestProject = () => {
 
@@ -46,9 +47,9 @@ const LatestProject = () => {
                                                     <div className="service-content">
                                                         <p>{project.short_desc}</p>
                                                     </div>
-                                                    <a href="#!" className="btn btn-primary small">
+                                                    <Link to={`/project/${project.id}`} className="btn btn-primary small">
                                                         Read More
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,7 +67,7 @@ const LatestProject = () => {
                                                 <div className='service-content'>
                                                     <p>Specialty construction is a niche sector within the construction industry that focuses on projects requiring specialized skills, materials, and techniques.</p>
                                                 </div>
-                                                <a href="#" className='btn btn-primary small'>Read More</a>
+                                                <Link to="#" className='btn btn-primary small'>Read More</Link>
                                             </div>
                                         </div>
                                     </div>

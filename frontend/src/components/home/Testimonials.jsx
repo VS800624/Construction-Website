@@ -15,7 +15,7 @@ const Testimonials = () => {
       method: "GET",
     });
     const result = await res.json();
-    console.log(result);
+    // console.table(result.data);
     setTestimonials(result.data);
   };
 
@@ -57,7 +57,7 @@ const Testimonials = () => {
           {testimonials && testimonials.length > 0 ? (
             testimonials.map((testimonial) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={testimonial.id}>
                   <div className="card shadow border-0">
                     <div className="card-body p-5">
                       <div className="rating flex">

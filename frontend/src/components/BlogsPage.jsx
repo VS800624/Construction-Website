@@ -4,6 +4,7 @@ import Footer from "./home/Footer";
 import Header from "./home/Header";
 import { useEffect, useState } from "react";
 import { apiUrl, fileUrl } from "./common/http";
+import { Link } from 'react-router-dom';
 
 const BlogsPage = () => {
 
@@ -46,20 +47,20 @@ const BlogsPage = () => {
                             articles && articles.length > 0 ? (
                                 articles.map((article) => {
                                     return (
-                                <div className="col-md-4 mb-4">
+                                <div key={article.id} className="col-md-4 mb-4">
                                     <div className="card shadow border-0">
                                         <div className="card-img-top">
                                             <img
                                                 src={`${fileUrl}uploads/articles/small/${article.image}`}
                                                 alt={article.title}
-                                                className="w-100"
+                                                className="w-[120px]"
                                             />
                                         </div>
                                     <div className="card-body p-4">
                                         <div className='mb-3'>
-                                            <a href="#" className='title'>{article.title}</a>
+                                            <Link to={`/blog/${article.id}`} className='title'>{article.title}</Link>
                                         </div>
-                                        <a href="" className='btn btn-primary'>Read More</a>
+                                        <Link to={`/blog/${article.id}`} className='btn btn-primary'>Read More</Link>
                                     </div>
                                     </div>
                                 </div>

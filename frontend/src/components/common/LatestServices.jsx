@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import ServiceImg from '../../assets/images/construction1.jpg'
 import { apiUrl, fileUrl } from './http'
+import { Link } from 'react-router-dom'
 
 const LatestServices = () => {
 
@@ -45,9 +46,9 @@ const LatestServices = () => {
                                                     <div className="service-content">
                                                         <p>{service.short_desc}</p>
                                                     </div>
-                                                    <a href="#!" className="btn btn-primary small">
+                                                    <Link to={`/service/${service.id}`} className="btn btn-primary small">
                                                         Read More
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -65,7 +66,7 @@ const LatestServices = () => {
                                                 <div className='service-content'>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit, Ipsam, qui? Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit.</p>
                                                 </div>
-                                                <a href="#" className='btn btn-primary small'>Read More</a>
+                                                <Link to="" className='btn btn-primary small'>Read More</Link>
                                             </div>
                                         </div>
                                     </div>

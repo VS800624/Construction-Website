@@ -27,6 +27,9 @@ import EditTestimonials from './components/backend/testimonials/EditTestimonials
 import ShowMembers from './components/backend/members/ShowMembers';
 import CreateMembers from './components/backend/members/CreateMembers';
 import EditMembers from './components/backend/members/EditMembers';
+import ServiceDetail from './components/ServiceDetail';
+import ProjectDetail from './components/ProjectDetail';
+import BlogDetail from './components/BlogDetail';
 
 
 function App() {
@@ -43,6 +46,9 @@ function App() {
           <Route path='/blogs' element={<BlogsPage/>}/>
           <Route path='/contact-us' element={<ContactUs/>}/>
           <Route path='/admin/login' element={<Login/>}/>
+          <Route path='/service/:id' element={<ServiceDetail/>}/>
+          <Route path='/project/:id' element={<ProjectDetail/>}/>
+          <Route path='/blog/:id' element={<BlogDetail/>}/>
 
           <Route path='/admin/dashboard' element={
             <RequireAuth>

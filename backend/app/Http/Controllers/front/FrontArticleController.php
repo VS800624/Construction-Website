@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class FrontArticleController extends Controller
 {
     //This method will return all active articles
-    public function index() {
+     public function index() {
         $article = Article::orderBy('created_at','DESC')
                                 ->where('status',1)->get();
         return response()->json([
@@ -30,5 +30,20 @@ class FrontArticleController extends Controller
         ]); 
     }
 
-     
+    //  This method will return single article 
+    public function article($id) {
+        $article = Article::find($id);
+
+        if ($article == null) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Article not found'
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $article
+        ]);
+    }
 }

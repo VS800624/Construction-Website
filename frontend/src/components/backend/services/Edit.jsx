@@ -102,7 +102,7 @@ const Edit = ({placeholder}) => {
           const result = await res.json();
           console.log(result);
           
-          setIsDisable(true)
+          setIsDisable(false)
 
             if (result.status == false) {
                 toast.error(result.errors.image[0])

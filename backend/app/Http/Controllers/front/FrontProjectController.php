@@ -30,4 +30,21 @@ class FrontProjectController extends Controller
             'data' => $projects
         ]);
     }
+
+    // This method will return single project
+    public function project($id){
+        $project = Project::find($id);
+
+        if ($project == null) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Project not found.'
+            ]);
+
+        }
+        return response()->json([
+            'status' => true,
+            'data' => $project
+        ]);
+    }
 }

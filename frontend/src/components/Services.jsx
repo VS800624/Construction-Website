@@ -4,6 +4,7 @@ import Header from "./home/Header"
 import ServiceImg from '../assets/images/construction1.jpg'
 import { useEffect, useState } from "react";
 import { apiUrl, fileUrl } from "./common/http";
+import { Link } from "react-router-dom";
 
 const Services = () => {
 
@@ -59,9 +60,9 @@ const Services = () => {
                                                             <div className="service-content">
                                                                 <p>{service.short_desc}</p>
                                                             </div>
-                                                            <a href="#!" className="btn btn-primary small">
+                                                            <Link to={`/service/${service.id}`} className="btn btn-primary small">
                                                                 Read More
-                                                            </a>
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 </div>
