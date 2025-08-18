@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {lazy, Suspense} from "react";
 import { BrowserRouter, createBrowserRouter, Route, Routes } from 'react-router-dom';
 import './assets/css/style.scss'
+import RequireAuth from './components/common/RequireAuth';
 // import Home from './components/home/Home';
 // import About from './components/About';
 // import Services from './components/Services';
@@ -12,7 +13,6 @@ import './assets/css/style.scss'
 // import ContactUs from './components/ContactUs';
 // import Login from './components/backend/Login';
 // import Dashboard from './components/backend/Dashboard';
-// import RequireAuth from './components/common/RequireAuth';
 // import {default as ShowServices} from './components/backend/services/show';
 // import {default as CreateService} from './components/backend/services/Create';
 // import {default as EditService} from './components/backend/services/Edit';
